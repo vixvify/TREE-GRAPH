@@ -72,7 +72,7 @@ export default function DijkstraInteractive() {
   };
 
   return (
-    <div className="p-15 bg-gray-800 rounded-2xl h-[800px]">
+    <div className="p-15 bg-gray-800 rounded-2xl h-[700px]">
       <h1 className="text-4xl font-bold mb-15 text-white">
         Dijkstra Interactive
       </h1>

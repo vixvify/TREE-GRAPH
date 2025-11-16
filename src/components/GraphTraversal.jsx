@@ -71,7 +71,7 @@ export default function GraphTraversal() {
 
   return (
     <div className="flex flex-col items-center justify-center text-white">
-      <div className="bg-gray-800 rounded-2xl shadow-lg p-8 flex flex-col gap-5 h-[800px]">
+      <div className="bg-gray-800 rounded-2xl shadow-lg p-8 flex flex-col gap-5 h-[700px]">
         <h1 className="text-4xl font-bold mb-6 text-center">
           Graph Traversal (DFS & BFS)
         </h1>

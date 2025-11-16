@@ -9,7 +9,7 @@ export default function App() {
       <h1 className="lg:text-6xl text-4xl font-bold text-center mt-20 pl-5 pr-5">
         PROJECT CSS 113
       </h1>
-      <div className="flex flex-col lg:flex-row justify-center items-center gap-10 mt-20">
+      <div className="flex flex-col lg:flex-row justify-center items-center gap-10 mt-10">
         <GraphTraversal />
         <DijkstraVisualizer />
         <MSTVisualizer />
