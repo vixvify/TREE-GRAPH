@@ -25,16 +25,12 @@ export default function GraphTraversal() {
   const dfs = (graph, start) => {
     const visited = new Set();
     const result = [];
-
     const traverse = (node) => {
       if (!node || visited.has(node)) return;
       visited.add(node);
       result.push(node);
-      for (let neighbor of graph[node] || []) {
-        traverse(neighbor);
-      }
+      for (let neighbor of graph[node] || []) traverse(neighbor);
     };
-
     traverse(start);
     return result;
   };
@@ -43,88 +39,83 @@ export default function GraphTraversal() {
     const visited = new Set();
     const queue = [start];
     const result = [];
-
     while (queue.length > 0) {
       const node = queue.shift();
       if (!visited.has(node)) {
         visited.add(node);
         result.push(node);
-        for (let neighbor of graph[node] || []) {
+        for (let neighbor of graph[node] || [])
           if (!visited.has(neighbor)) queue.push(neighbor);
-        }
       }
     }
     return result;
   };
 
-  const handleDFS = () => {
-    const graph = buildGraph(edges);
-    const res = dfs(graph, startNode);
-    setDfsResult(res);
-  };
-
-  const handleBFS = () => {
-    const graph = buildGraph(edges);
-    const res = bfs(graph, startNode);
-    setBfsResult(res);
-  };
-
   return (
-    <div className="flex flex-col items-center justify-center text-white">
-      <div className="bg-gray-800 rounded-2xl shadow-lg p-8 flex flex-col gap-5 h-[700px]">
-        <h1 className="text-4xl font-bold mb-6 text-center">
-          Graph Traversal (DFS & BFS)
-        </h1>
+    <div
+      className="
+      bg-[#1A1A26] border border-purple-500/40 
+      shadow-lg shadow-purple-600/25 
+      rounded-2xl p-8 w-[380px] h-[700px]
+      backdrop-blur-sm transition-all duration-300
+      hover:shadow-purple-500/60 hover:scale-[1.02]
+    "
+    >
+      <h1
+        className="text-3xl font-bold text-center mb-6 
+      bg-gradient-to-r from-purple-300 to-purple-500 text-transparent bg-clip-text"
+      >
+        DFS & BFS
+      </h1>
 
-        <label className="block mb-2 text-sm font-semibold">
-          🧩 ใส่เส้นเชื่อมระหว่าง Node (เช่น A-B, A-C, B-D):
-        </label>
-        <input
-          type="text"
-          placeholder="A-B, A-C, B-D"
-          value={edges}
-          onChange={(e) => setEdges(e.target.value)}
-          className="w-full mb-4 p-2 rounded-lg text-white border-2 border-white"
-        />
+      <label className="block text-sm text-purple-200 mb-1">
+        🧩 ใส่เส้นเชื่อม (A-B, A-C, B-D)
+      </label>
+      <input
+        value={edges}
+        onChange={(e) => setEdges(e.target.value)}
+        placeholder="A-B, A-C, B-D"
+        className="w-full p-2 rounded bg-black/40 border border-purple-500/40 
+        text-purple-100 focus:outline-none focus:border-purple-300 mb-4"
+      />
 
-        <label className="block mb-2 text-sm font-semibold">
-          🚀 Node เริ่มต้น:
-        </label>
-        <input
-          type="text"
-          placeholder="A"
-          value={startNode}
-          onChange={(e) => setStartNode(e.target.value)}
-          className="w-full mb-4 p-2 rounded-lg text-white border-2 border-white"
-        />
+      <label className="block text-sm text-purple-200 mb-1">
+        🚀 Node เริ่มต้น:
+      </label>
+      <input
+        value={startNode}
+        onChange={(e) => setStartNode(e.target.value)}
+        placeholder="A"
+        className="w-full p-2 rounded bg-black/40 border border-purple-500/40 
+        text-purple-100 focus:outline-none focus:border-purple-300 mb-4"
+      />
 
-        <div className="flex gap-4 justify-center">
-          <button
-            onClick={handleDFS}
-            className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg"
-          >
-            Run DFS
-          </button>
-          <button
-            onClick={handleBFS}
-            className="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg"
-          >
-            Run BFS
-          </button>
-        </div>
-
-        <div className="mt-6">
-          <p className="text-lg font-semibold text-blue-400">DFS Order:</p>
-          <p className="text-gray-300 mb-3">
-            {dfsResult.length > 0 ? dfsResult.join(" → ") : "-"}
-          </p>
-
-          <p className="text-lg font-semibold text-green-400">BFS Order:</p>
-          <p className="text-gray-300">
-            {bfsResult.length > 0 ? bfsResult.join(" → ") : "-"}
-          </p>
-        </div>
+      <div className="flex gap-3 justify-center mb-6">
+        <button
+          onClick={() => setDfsResult(dfs(buildGraph(edges), startNode))}
+          className="px-4 py-2 rounded bg-gradient-to-r from-purple-700 to-purple-500 
+          hover:opacity-90 shadow-md shadow-purple-800/40"
+        >
+          Run DFS
+        </button>
+        <button
+          onClick={() => setBfsResult(bfs(buildGraph(edges), startNode))}
+          className="px-4 py-2 rounded bg-gradient-to-r from-purple-700 to-purple-500 
+          hover:opacity-90 shadow-md shadow-purple-800/40"
+        >
+          Run BFS
+        </button>
       </div>
+
+      <p className="text-purple-300 font-semibold">DFS Order:</p>
+      <p className="text-gray-300 mb-3">
+        {dfsResult.length > 0 ? dfsResult.join(" → ") : "-"}
+      </p>
+
+      <p className="text-green-300 font-semibold">BFS Order:</p>
+      <p className="text-gray-300">
+        {bfsResult.length > 0 ? bfsResult.join(" → ") : "-"}
+      </p>
     </div>
   );
 }

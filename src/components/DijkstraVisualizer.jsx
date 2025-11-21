@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function DijkstraInteractive() {
+export default function DijkstraVisualizer() {
   const [nodes, setNodes] = useState([]);
   const [edges, setEdges] = useState([]);
   const [nodeInput, setNodeInput] = useState("");
@@ -43,8 +43,8 @@ export default function DijkstraInteractive() {
       prev[n] = null;
     });
     d[source] = 0;
-    const visited = new Set();
 
+    const visited = new Set();
     while (true) {
       let u = null,
         best = Infinity;
@@ -52,7 +52,9 @@ export default function DijkstraInteractive() {
         (n) => !visited.has(n) && d[n] < best && ((best = d[n]), (u = n))
       );
       if (!u) break;
+
       visited.add(u);
+
       adj[u].forEach(({ to, w }) => {
         const alt = d[u] + w;
         if (alt < d[to]) {
@@ -61,6 +63,7 @@ export default function DijkstraInteractive() {
         }
       });
     }
+
     setDist(d);
 
     const p = [];
@@ -71,115 +74,138 @@ export default function DijkstraInteractive() {
     }
     p.reverse();
     if (d[target] === Infinity) p.length = 0;
+
     setPath(p);
   };
 
   return (
-    <div className="p-15 bg-gray-800 rounded-2xl h-[700px]">
-      <h1 className="text-4xl font-bold mb-15 text-white">
-        Dijkstra Interactive
+    <div
+      className="
+      bg-[#1A1A26] border border-purple-500/40 
+      shadow-lg shadow-purple-600/25 
+      rounded-2xl p-8 w-[380px] h-[700px]
+      backdrop-blur-sm transition-all duration-300
+      hover:shadow-purple-500/60 hover:scale-[1.02]
+    "
+    >
+      <h1
+        className="text-3xl font-bold text-center mb-6 
+      bg-gradient-to-r from-purple-300 to-purple-500 text-transparent bg-clip-text"
+      >
+        Dijkstra Algorithm
       </h1>
 
-      {/* Nodes */}
+      {/* Node Input */}
       <div className="mb-4">
         <input
           value={nodeInput}
           onChange={(e) => setNodeInput(e.target.value)}
           placeholder="Node label"
-          className="border border-white text-white p-1 mr-2"
+          className="w-full p-2 rounded bg-black/40 border border-purple-500/40 
+          text-purple-100 focus:outline-none focus:border-purple-300"
         />
         <button
           onClick={addNode}
-          className="bg-green-600 text-white px-2 rounded"
+          className="mt-2 w-full px-4 py-2 rounded bg-gradient-to-r from-purple-700 to-purple-500 
+          hover:opacity-90 shadow-md shadow-purple-800/40"
         >
           Add Node
         </button>
-        <div className="mt-2  text-white">Nodes: {nodes.join(", ")}</div>
+        <div className="mt-2 text-purple-300 text-sm">
+          Nodes: {nodes.join(", ")}
+        </div>
       </div>
 
-      {/* Edges */}
+      {/* Edge Input */}
       <div className="mb-4">
-        <select
-          value={edgeFrom}
-          onChange={(e) => setEdgeFrom(e.target.value)}
-          className="border p-1 mr-2 border-white  text-black"
-        >
-          <option value="">From</option>
-          {nodes.map((n) => (
-            <option key={n}>{n}</option>
-          ))}
-        </select>
-        <select
-          value={edgeTo}
-          onChange={(e) => setEdgeTo(e.target.value)}
-          className="border p-1 mr-2 border-white  text-black"
-        >
-          <option value="">To</option>
-          {nodes.map((n) => (
-            <option key={n}>{n}</option>
-          ))}
-        </select>
+        <div className="flex gap-2 mb-2">
+          <select
+            value={edgeFrom}
+            onChange={(e) => setEdgeFrom(e.target.value)}
+            className="w-full p-2 bg-black/40 border border-purple-500/40 text-purple-100 rounded"
+          >
+            <option value="">From</option>
+            {nodes.map((n) => (
+              <option key={n}>{n}</option>
+            ))}
+          </select>
+
+          <select
+            value={edgeTo}
+            onChange={(e) => setEdgeTo(e.target.value)}
+            className="w-full p-2 bg-black/40 border border-purple-500/40 text-purple-100 rounded"
+          >
+            <option value="">To</option>
+            {nodes.map((n) => (
+              <option key={n}>{n}</option>
+            ))}
+          </select>
+        </div>
+
         <input
           type="number"
           value={edgeWeight}
           onChange={(e) => setEdgeWeight(e.target.value)}
-          className="border p-1 mr-2 w-20 border-white  text-white"
+          className="w-full p-2 bg-black/40 border border-purple-500/40 text-purple-100 rounded mb-2"
         />
+
         <button
           onClick={addEdge}
-          className="bg-blue-600 text-white px-2 rounded"
+          className="w-full px-4 py-2 rounded bg-gradient-to-r from-purple-700 to-purple-500 
+          hover:opacity-90 shadow-md shadow-purple-800/40"
         >
           Add Edge
         </button>
-        <div className="mt-2 text-white">
+
+        <div className="mt-2 text-purple-300 text-sm">
           Edges: {edges.map((e) => `${e.from}→${e.to}(${e.w})`).join(", ")}
         </div>
       </div>
 
-      {/* Run */}
-      <div className="mb-4 flex gap-2">
+      {/* RUN */}
+      <div className="flex gap-2 mb-4">
         <select
           value={source}
           onChange={(e) => setSource(e.target.value)}
-          className="border p-1 border-white  text-white"
+          className="w-full p-2 bg-black/40 border border-purple-500/40 text-purple-100 rounded"
         >
           <option value="">Source</option>
           {nodes.map((n) => (
             <option key={n}>{n}</option>
           ))}
         </select>
+
         <select
           value={target}
           onChange={(e) => setTarget(e.target.value)}
-          className="border p-1 border-white  text-white"
+          className="w-full p-2 bg-black/40 border border-purple-500/40 text-purple-100 rounded"
         >
           <option value="">Target</option>
           {nodes.map((n) => (
             <option key={n}>{n}</option>
           ))}
         </select>
-        <button
-          onClick={runDijkstra}
-          className="bg-purple-600 text-white px-2 rounded"
-        >
-          Run
-        </button>
       </div>
 
+      <button
+        onClick={runDijkstra}
+        className="w-full px-4 py-2 rounded bg-gradient-to-r from-purple-700 to-purple-500 
+        hover:opacity-90 shadow-md shadow-purple-800/40"
+      >
+        Run
+      </button>
+
       {/* Results */}
-      <div>
-        <h2 className="font-semibold text-white">Distances:</h2>
-        <ul className="text-white">
-          {nodes.map((n) => (
-            <li key={n}>
-              {n}: {dist[n] === Infinity ? "∞" : dist[n]}
-            </li>
-          ))}
-        </ul>
-        <h2 className="font-semibold mt-2 text-white">Shortest Path:</h2>
-        <div className="text-white">
-          {path.length ? path.join(" → ") : "No path"}
-        </div>
+      <div className="mt-4 text-sm text-purple-200">
+        <h2 className="font-semibold text-purple-300">Distances:</h2>
+        {nodes.map((n) => (
+          <div key={n}>
+            {n}: {dist[n] === Infinity ? "∞" : dist[n]}
+          </div>
+        ))}
+
+        <h2 className="font-semibold mt-3 text-purple-300">Shortest Path:</h2>
+        {path.length ? path.join(" → ") : "No path"}
       </div>
     </div>
   );
