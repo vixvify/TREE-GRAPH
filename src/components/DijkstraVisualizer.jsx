@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
 
-export default function DijkstraVisualizer() {
+export default function DijkstraVisualizer({ onGraphChange, onHighlight }) {
   const [nodes, setNodes] = useState([]);
   const [edges, setEdges] = useState([]);
   const [nodeInput, setNodeInput] = useState("");
@@ -74,9 +75,16 @@ export default function DijkstraVisualizer() {
     }
     p.reverse();
     if (d[target] === Infinity) p.length = 0;
+    onHighlight(
+      p.slice(0, -1).map((node, i) => ({ from: node, to: p[i + 1] }))
+    );
 
     setPath(p);
   };
+
+  useEffect(() => {
+    onGraphChange(nodes, edges);
+  }, [nodes, edges]);
 
   return (
     <div

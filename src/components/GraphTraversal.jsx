@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
 
-export default function GraphTraversal() {
+export default function GraphTraversal({ onGraphChange, onHighlight }) {
   const [edges, setEdges] = useState("");
   const [startNode, setStartNode] = useState("");
   const [dfsResult, setDfsResult] = useState([]);
@@ -50,6 +51,22 @@ export default function GraphTraversal() {
     }
     return result;
   };
+
+  useEffect(() => {
+    const graph = buildGraph(edges);
+    const nodes = Object.keys(graph);
+    const edgeList = [];
+
+    Object.keys(graph).forEach((u) =>
+      graph[u].forEach((v) => {
+        if (!edgeList.find((e) => e.from === v && e.to === u)) {
+          edgeList.push({ from: u, to: v, w: 1 });
+        }
+      })
+    );
+
+    onGraphChange(nodes, edgeList);
+  }, [edges]);
 
   return (
     <div

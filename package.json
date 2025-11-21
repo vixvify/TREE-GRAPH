@@ -16,6 +16,7 @@
     "react-force-graph": "^1.48.1",
     "react-force-graph-2d": "^1.29.0",
     "react-force-graph-3d": "^1.29.0",
+    "reactflow": "^11.11.4",
     "tailwindcss": "^4.1.17",
     "three": "^0.181.0",
     "three-spritetext": "^1.10.0"

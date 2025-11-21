@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
 
-export default function MSTVisualizer() {
+export default function MSTVisualizer({ onGraphChange, onHighlight }) {
   const [nodes, setNodes] = useState([]);
   const [edges, setEdges] = useState([]);
   const [nodeInput, setNodeInput] = useState("");
@@ -57,7 +58,7 @@ export default function MSTVisualizer() {
       mst.push(minEdge);
       visited.add(minEdge.to);
     }
-
+    onHighlight(mst);
     setPrimMST(mst);
   };
 
@@ -79,9 +80,13 @@ export default function MSTVisualizer() {
         union(e.from, e.to);
       }
     }
-
+    onHighlight(mst);
     setKruskalMST(mst);
   };
+
+  useEffect(() => {
+    onGraphChange(nodes, edges);
+  }, [nodes, edges]);
 
   return (
     <div
