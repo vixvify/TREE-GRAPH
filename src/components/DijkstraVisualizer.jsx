@@ -31,7 +31,10 @@ export default function DijkstraInteractive() {
   const runDijkstra = () => {
     const adj = {};
     nodes.forEach((n) => (adj[n] = []));
-    edges.forEach((e) => adj[e.from].push({ to: e.to, w: e.w }));
+    edges.forEach((e) => {
+      adj[e.from].push({ to: e.to, w: e.w });
+      adj[e.to].push({ to: e.from, w: e.w });
+    });
 
     const d = {},
       prev = {};
