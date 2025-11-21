@@ -102,7 +102,7 @@ export default function DijkstraInteractive() {
         <select
           value={edgeFrom}
           onChange={(e) => setEdgeFrom(e.target.value)}
-          className="border p-1 mr-2 border-white  text-white"
+          className="border p-1 mr-2 border-white  text-black"
         >
           <option value="">From</option>
           {nodes.map((n) => (
@@ -112,7 +112,7 @@ export default function DijkstraInteractive() {
         <select
           value={edgeTo}
           onChange={(e) => setEdgeTo(e.target.value)}
-          className="border p-1 mr-2 border-white  text-white"
+          className="border p-1 mr-2 border-white  text-black"
         >
           <option value="">To</option>
           {nodes.map((n) => (

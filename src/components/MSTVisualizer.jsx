@@ -21,10 +21,10 @@ export default function MSTVisualizer() {
   // เพิ่ม Edge
   const addEdge = () => {
     if (edgeFrom && edgeTo && edgeWeight >= 0) {
-      setEdges([
-        ...edges,
-        { from: edgeFrom, to: edgeTo, w: Number(edgeWeight) },
-      ]);
+      const w = Number(edgeWeight);
+      const u = edgeFrom < edgeTo ? edgeFrom : edgeTo;
+      const v = edgeFrom < edgeTo ? edgeTo : edgeFrom;
+      setEdges([...edges, { from: u, to: v, w }]);
     }
   };
 
@@ -60,12 +60,17 @@ export default function MSTVisualizer() {
   // --- Kruskal's Algorithm ---
   const runKruskal = () => {
     const parent = {};
-    nodes.forEach((n) => (parent[n] = n));
+    const sortedNodes = [...nodes].sort();
+    sortedNodes.forEach((n) => (parent[n] = n));
     const find = (x) => (parent[x] === x ? x : (parent[x] = find(parent[x])));
     const union = (x, y) => {
       parent[find(x)] = find(y);
     };
-    const sorted = [...edges].sort((a, b) => a.w - b.w);
+    const sorted = [...edges].sort((a, b) => {
+      if (a.w !== b.w) return a.w - b.w;
+      if (a.from !== b.from) return a.from.localeCompare(b.from);
+      return a.to.localeCompare(b.to);
+    });
     const mst = [];
     for (const e of sorted) {
       if (find(e.from) !== find(e.to)) {
@@ -104,7 +109,7 @@ export default function MSTVisualizer() {
         <select
           value={edgeFrom}
           onChange={(e) => setEdgeFrom(e.target.value)}
-          className="border p-1 mr-2 text-white border-white"
+          className="border p-1 mr-2 text-black border-white"
         >
           <option value="">From</option>
           {nodes.map((n) => (
@@ -114,7 +119,7 @@ export default function MSTVisualizer() {
         <select
           value={edgeTo}
           onChange={(e) => setEdgeTo(e.target.value)}
-          className="border p-1 mr-2 text-white border-white"
+          className="border p-1 mr-2 text-black border-white"
         >
           <option value="">To</option>
           {nodes.map((n) => (
